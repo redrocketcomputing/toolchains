@@ -14,12 +14,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
-# tools.mk
+# Makefile
 # Created on: 06/07/12
 # Author: Stephen Street
 #
 
-SUBDIRS = crosstools-ng
+SUBDIRS = tools compilers
 
 SUBDIRS-ALL = $(addsuffix -all, ${SUBDIRS})
 SUBDIRS-CLEAN = $(addsuffix -clean, ${SUBDIRS})
@@ -34,6 +34,9 @@ clean: ${SUBDIRS-CLEAN}
 
 distclean: ${SUBDIRS-DISTCLEAN}
 
+realclean: distclean
+	rm -rf /opt/toolchains/*
+
 ${SUBDIRS-ALL}:
 		$(MAKE) -C $(@:-all=) -f $(@:-all=).mk all
 
@@ -45,6 +48,5 @@ ${SUBDIRS-INSTALL}:
 
 ${SUBDIRS-DISTCLEAN}:
 	$(MAKE) -C $(@:-distclean=) -f $(@:-distclean=).mk distclean
-	rm -rf ${BUILD_ROOT}/tools
 
 .PHONY: ${SUBDIRS-ALL} ${SUBDIRS-CLEAN} ${SUBDIRS-INSTALL} ${SUBDIRS_DISTCLEAN}

@@ -14,40 +14,42 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
-# project.mk
+# arm-cortexa9-eabi.mk
 # Created on: 18/06/12
 # Author: Stephen Street
 #
 
-SOURCE_DIR=${CURDIR}/repository
-BUILD_DIR=${BUILD_ROOT}/tools/crosstools-ng
-CONFIGURATION_MARKER=${BUILD_DIR}/config.log
+SOURCE_DIR=${CURDIR}
+BUILD_DIR=${BUILD_ROOT}/compilers/arm-cortexa9-eabi
+BUILD_MARKER=/opt/toolchains/arm-cortexa9-eabi/build.log.bz2
+CONFIGURATION_MARKER=${BUILD_DIR}/.config
 
-all: ${CONFIGURATION_MARKER}
-	${MAKE} -C ${BUILD_DIR} all
+all: ${BUILD_MARKER}
 
-install: ${CONFIGURATION_MARKER}
-	${MAKE} -C ${BUILD_DIR} install
+install: ${BUILD_MARKER}
+	cd ${IMAGE_ROOT} && tar -C / -cjf arm-cortexa9-eabi.tar.bz2 opt/toolchains/arm-cortexa9-eabi
 
 clean: ${CONFIGURATION_MARKER}
-	${MAKE} -C ${BUILD_DIR} clean
+	cd ${BUILD_DIR} && ct-ng clean
 
 distclean:
 	rm -rf ${BUILD_DIR}
+	rm -rf ${IMAGE_ROOT}/arm-cortexa9-eabi*
 
 debug:
 	@echo "BUILD_ROOT=${BUILD_ROOT}"
 	@echo "TOOLS_ROOT=${TOOLS_ROOT}"
 	@echo "SOURCE_DIR=${SOURCE_DIR}"
 	@echo "BUILD_DIR=${BUILD_DIR}"
+	@echo "BUILD_MARKER=${BUILD_MARKER}"
 	@echo "CONFIGURATION_MARKER=${CONFIGURATION_MARKER}"
+
+${BUILD_MARKER}: ${CONFIGURATION_MARKER}
+	cd ${BUILD_DIR} && ct-ng build
 
 ${CONFIGURATION_MARKER}:
 	mkdir -p ${BUILD_DIR}
-	cp -a ${SOURCE_DIR}/* ${BUILD_DIR}
-	cd ${BUILD_DIR} && patch -p1 < ${SOURCE_DIR}/../remove-recursion-check.patch
-	cd ${BUILD_DIR} && patch -p1 < ${SOURCE_DIR}/../remove-110-aclocal-LIBC_TRY_CC_OPTION.patch
-	cd ${BUILD_DIR} && ./configure --prefix=${TOOLS_ROOT}
+	cp ${SOURCE_DIR}/arm-cortexa9-eabi.config ${BUILD_DIR}/.config
 	
 .PHONY: all install clean distclean
 
