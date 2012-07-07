@@ -19,7 +19,7 @@
 # Author: Stephen Street
 #
 
-SOURCE_DIR=${CURDIR}/repository
+SOURCE_DIR=${CURDIR}/src
 BUILD_DIR=${BUILD_ROOT}/tools/crosstools-ng
 CONFIGURATION_MARKER=${BUILD_DIR}/config.log
 
