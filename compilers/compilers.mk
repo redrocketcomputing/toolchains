@@ -30,11 +30,12 @@ SUBDIRS-DISTCLEAN = $(addsuffix -distclean, ${SUBDIRS})
 
 all: ${DOWNLOAD_DIR} ${SUBDIRS-ALL}
 
-install: ${SUBDIRS-INSTALL}
+install: ${DOWNLOAD_DIR} ${SUBDIRS-INSTALL}
 
 clean: ${SUBDIRS-CLEAN}
 
 distclean: ${SUBDIRS-DISTCLEAN}
+	rm -rf ${BUILD_ROOT}/compilers
 
 ${SUBDIRS-ALL}:
 		$(MAKE) -C $(@:-all=) -f $(@:-all=).mk all
