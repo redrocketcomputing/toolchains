@@ -33,6 +33,7 @@ install: ${SUBDIRS-INSTALL}
 clean: ${SUBDIRS-CLEAN}
 
 distclean: ${SUBDIRS-DISTCLEAN}
+	rm -rf local/bin/ct-ng local/lib/ct-ng* local/share/doc local/share/man/man1
 
 realclean: distclean
 	rm -rf /opt/toolchains/*
