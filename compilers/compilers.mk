@@ -14,10 +14,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
-# versions.mk
+# compilers.mk
 # Created on: 06/07/12
 # Author: Stephen Street
 #
+
+DOWNLOAD_DIR=${BUILD_ROOT}/compilers/downloads
 
 SUBDIRS = arm-926ejs-eabi arm-926ejs-linux-gnueabi arm-cortexa9-eabi arm-cortexa9-linux-gnueabi
 
@@ -26,7 +28,7 @@ SUBDIRS-CLEAN = $(addsuffix -clean, ${SUBDIRS})
 SUBDIRS-INSTALL = $(addsuffix -install, ${SUBDIRS})
 SUBDIRS-DISTCLEAN = $(addsuffix -distclean, ${SUBDIRS})
 
-all: ${SUBDIRS-ALL}
+all: ${DOWNLOAD_DIR} ${SUBDIRS-ALL}
 
 install: ${SUBDIRS-INSTALL}
 
@@ -46,5 +48,8 @@ ${SUBDIRS-INSTALL}:
 ${SUBDIRS-DISTCLEAN}:
 	$(MAKE) -C $(@:-distclean=) -f $(@:-distclean=).mk distclean
 	rm -rf ${BUILD_ROOT}/compilers
+
+${DOWNLOAD_DIR}:
+	mkdir -p ${DOWNLOAD_DIR}
 
 .PHONY: ${SUBDIRS-ALL} ${SUBDIRS-CLEAN} ${SUBDIRS-INSTALL} ${SUBDIRS_DISTCLEAN}
