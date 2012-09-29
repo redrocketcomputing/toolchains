@@ -5,7 +5,7 @@
 #-----------------------------------------------------------
 # The configurators rules
 
-configurators = menuconfig nconfig oldconfig
+configurators = menuconfig nconfig oldconfig defconfig olddefconfig
 PHONY += $(configurators)
 
 $(configurators): config_files
@@ -27,20 +27,28 @@ oldconfig: .config
 	@$(ECHO) "  CONF  $(KCONFIG_TOP)"
 	$(SILENT)$(CONF) --silent$@ $(KCONFIG_TOP)
 
+defconfig: .config
+	@$(ECHO) '  GEN   $@'
+	$(SILENT)$(CONF) --savedefconfig=$${CONFIG-defconfig} $(KCONFIG_TOP)
+
+olddefconfig:
+	@$(ECHO) '  CONF  $@'
+	$(SILENT)$(CONF) --defconfig=$${CONFIG-defconfig} $(KCONFIG_TOP)
+
 # Always be silent, the stdout an be >.config
 extractconfig:
-	@awk 'BEGIN { dump=0; }                                                 \
-	      dump==1 && $$0~/^\[.....\][[:space:]]+(# |)CT_/ {                 \
-	          $$1="";                                                       \
-	          gsub("^[[:space:]]","");                                      \
-	          print;                                                        \
-	      }                                                                 \
-	      $$0~/Dumping user-supplied crosstool-NG configuration: done in/ { \
-	          dump=0;                                                       \
-	      }                                                                 \
-	      $$0~/Dumping user-supplied crosstool-NG configuration$$/ {        \
-	          dump=1;                                                       \
-	      }'
+	@$(awk) 'BEGIN { dump=0; }                                                  \
+	         dump==1 && $$0~/^\[.....\][[:space:]]+(# |)CT_/ {                  \
+	             $$1="";                                                        \
+	             gsub("^[[:space:]]","");                                       \
+	             print;                                                         \
+	         }                                                                  \
+	         $$0~/Dumping user-supplied crosstool-NG configuration: done in/ {  \
+	             dump=0;                                                        \
+	         }                                                                  \
+	         $$0~/Dumping user-supplied crosstool-NG configuration$$/ {         \
+	             dump=1;                                                        \
+	         }'
 
 #-----------------------------------------------------------
 # Help text used by make help
@@ -50,3 +58,6 @@ help-config::
 	@echo  '  oldconfig          - Update current config using a provided .config as base'
 	@echo  '  extractconfig      - Extract to stdout the configuration items from a'
 	@echo  '                       build.log file piped to stdin'
+	@echo  '  defconfig          - Save current config as a mini-defconfig to $${CONFIG}'
+	@echo  '  olddefconfig       - Update config from a mini-defconfig $${CONFIG}'
+	@echo  '                       (default: $${CONFIG}=./defconfig)'

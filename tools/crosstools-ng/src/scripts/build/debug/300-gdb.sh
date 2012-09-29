@@ -7,7 +7,7 @@
 CT_DEBUG_GDB_NCURSES_VERSION="5.9"
 
 # Ditto for the expat library
-CT_DEBUG_GDB_EXPAT_VERSION="2.0.1"
+CT_DEBUG_GDB_EXPAT_VERSION="2.1.0"
 
 do_debug_gdb_parts() {
     do_gdb=
@@ -62,7 +62,7 @@ do_debug_gdb_get() {
 
     if [ "${do_expat}" = "y" ]; then
         CT_GetFile "expat-${CT_DEBUG_GDB_EXPAT_VERSION}" .tar.gz    \
-                   http://kent.dl.sourceforge.net/project/expat/expat/${CT_DEBUG_GDB_EXPAT_VERSION}
+                   http://downloads.sourceforge.net/project/expat/expat/${CT_DEBUG_GDB_EXPAT_VERSION}
     fi
 }
 

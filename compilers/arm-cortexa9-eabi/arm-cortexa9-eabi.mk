@@ -21,13 +21,13 @@
 
 SOURCE_DIR=${CURDIR}
 BUILD_DIR=${BUILD_ROOT}/compilers/arm-cortexa9-eabi
-BUILD_MARKER=/opt/toolchains/arm-cortexa9-eabi/build.log.bz2
+BUILD_MARKER=${IMAGE_ROOT}/arm-cortexa9-eabi/build.log.bz2
 CONFIGURATION_MARKER=${BUILD_DIR}/.config
 
 all: ${BUILD_MARKER}
 
 install: ${BUILD_MARKER}
-	cd ${IMAGE_ROOT} && tar -C / -cjf arm-cortexa9-eabi.tar.bz2 opt/toolchains/arm-cortexa9-eabi
+	cd ${IMAGE_ROOT} && tar -cjf arm-cortexa9-eabi.tar.bz2 arm-cortexa9-eabi
 
 clean: ${CONFIGURATION_MARKER}
 	cd ${BUILD_DIR} && ct-ng clean

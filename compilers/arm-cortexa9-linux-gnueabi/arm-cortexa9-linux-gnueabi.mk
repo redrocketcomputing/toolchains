@@ -21,19 +21,19 @@
 
 SOURCE_DIR=${CURDIR}
 BUILD_DIR=${BUILD_ROOT}/compilers/arm-cortexa9-linux-gnueabi
-BUILD_MARKER=/opt/toolchains/arm-cortexa9-linux-gnueabi/build.log.bz2
+BUILD_MARKER=${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi/build.log.bz2
 CONFIGURATION_MARKER=${BUILD_DIR}/.config
 
 all: ${BUILD_MARKER}
 
 install: ${BUILD_MARKER}
 	rm -rf ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi-sysroot
-	cp -al /opt/toolchains/arm-cortexa9-linux-gnueabi/arm-cortexa9-linux-gnueabi/arm-cortexa9-linux-gnueabi-sysroot ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi-sysroot
-	cp -al /opt/toolchains/arm-cortexa9-linux-gnueabi/arm-cortexa9-linux-gnueabi/debug-root/* ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi-sysroot/
+	cp -al ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi/arm-cortexa9-linux-gnueabi/arm-cortexa9-linux-gnueabi-sysroot ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi-sysroot
+	cp -al ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi/arm-cortexa9-linux-gnueabi/debug-root/* ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi-sysroot/
 	rm -rf ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi-sysroot/lib32 ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi-sysroot/lib64 ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi-sysroot/usr/lib32 ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi-sysroot/usr/lib64
 	cd ${IMAGE_ROOT} && tar -C ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi-sysroot -cjf arm-cortexa9-linux-gnueabi-sysroot.tar.bz2 .
 	rm -rf ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi-sysroot
-	cd ${IMAGE_ROOT} && tar -C / -cjf arm-cortexa9-linux-gnueabi.tar.bz2 opt/toolchains/arm-cortexa9-linux-gnueabi
+	cd ${IMAGE_ROOT} && tar -cjf arm-cortexa9-linux-gnueabi.tar.bz2 arm-cortexa9-linux-gnueabi
 
 clean: ${CONFIGURATION_MARKER}
 	cd ${BUILD_DIR} && ct-ng clean

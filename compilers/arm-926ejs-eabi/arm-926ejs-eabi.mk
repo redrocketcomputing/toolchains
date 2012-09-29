@@ -21,13 +21,13 @@
 
 SOURCE_DIR=${CURDIR}
 BUILD_DIR=${BUILD_ROOT}/compilers/arm-926ejs-eabi
-BUILD_MARKER=/opt/toolchains/arm-926ejs-eabi/build.log.bz2
+BUILD_MARKER=${IMAGE_ROOT}/arm-926ejs-eabi/build.log.bz2
 CONFIGURATION_MARKER=${BUILD_DIR}/.config
 
 all: ${BUILD_MARKER}
 
 install: ${BUILD_MARKER}
-	cd ${IMAGE_ROOT} && tar -C / -cjf arm-926ejs-eabi.tar.bz2 opt/toolchains/arm-926ejs-eabi
+	cd ${IMAGE_ROOT} && tar -cjf arm-926ejs-eabi.tar.bz2 arm-926ejs-eabi
 
 clean: ${CONFIGURATION_MARKER}
 	cd ${BUILD_DIR} && ct-ng clean

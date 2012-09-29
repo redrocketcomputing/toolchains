@@ -46,7 +46,7 @@ ${CONFIGURATION_MARKER}:
 	mkdir -p ${BUILD_DIR}
 	cp -a ${SOURCE_DIR}/* ${BUILD_DIR}
 	cd ${BUILD_DIR} && patch -p1 < ${SOURCE_DIR}/../remove-recursion-check.patch
-	cd ${BUILD_DIR} && patch -p1 < ${SOURCE_DIR}/../remove-110-aclocal-LIBC_TRY_CC_OPTION.patch
+	#cd ${BUILD_DIR} && patch -p1 < ${SOURCE_DIR}/../remove-110-aclocal-LIBC_TRY_CC_OPTION.patch
 	cd ${BUILD_DIR} && ./configure --prefix=${TOOLS_ROOT}
 	
 .PHONY: all install clean distclean

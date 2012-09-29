@@ -6,12 +6,14 @@ CT_DoKernelTupleValues() {
     if [ "${CT_ARCH_USE_MMU}" = "y" ]; then
         CT_TARGET_KERNEL="linux"
     else
-    # Sometime, noMMU linux targets have a -uclinux tuple, while
-    # sometime it's -linux. We currently have only one noMMU linux
-    # target, and it uses -linux, so let's just use that. Time
-    # to fix that later...
-    #    CT_TARGET_KERNEL="uclinux"
-        CT_TARGET_KERNEL="linux"
+        # Some no-mmu linux targets requires a -uclinux tuple (like m68k/cf),
+        # while others must have a -linux tuple (like bfin).  Other targets
+        # should be added here when someone starts to care about them.
+        case "${CT_ARCH}" in
+            blackfin)   CT_TARGET_KERNEL="linux" ;;
+            m68k)       CT_TARGET_KERNEL="uclinux" ;;
+            *)          CT_Abort "Unsupported no-mmu arch '${CT_ARCH}'"
+        esac
     fi
 }
 
@@ -41,7 +43,7 @@ do_kernel_get() {
                                       "${CT_TARBALLS_DIR}/${custom_name}"
         else
             custom_name="linux-custom"
-            CT_DoExecLog DEBUG ln -s "${CT_KERNEL_LINUX_CUSTOM_LOCATION}"  \
+            CT_DoExecLog DEBUG ln -sf "${CT_KERNEL_LINUX_CUSTOM_LOCATION}"  \
                                       "${CT_SRC_DIR}/${custom_name}"
         fi
     else # Not a custom tarball

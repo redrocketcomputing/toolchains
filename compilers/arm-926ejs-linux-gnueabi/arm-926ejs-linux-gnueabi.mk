@@ -21,19 +21,19 @@
 
 SOURCE_DIR=${CURDIR}
 BUILD_DIR=${BUILD_ROOT}/compilers/arm-926ejs-linux-gnueabi
-BUILD_MARKER=/opt/toolchains/arm-926ejs-linux-gnueabi/build.log.bz2
+BUILD_MARKER=${IMAGE_ROOT}/arm-926ejs-linux-gnueabi/build.log.bz2
 CONFIGURATION_MARKER=${BUILD_DIR}/.config
 
 all: ${BUILD_MARKER}
 
 install: ${BUILD_MARKER}
 	rm -rf ${IMAGE_ROOT}/arm-926ejs-linux-gnueabi-sysroot
-	cp -al /opt/toolchains/arm-926ejs-linux-gnueabi/arm-926ejs-linux-gnueabi/arm-926ejs-linux-gnueabi-sysroot ${IMAGE_ROOT}/arm-926ejs-linux-gnueabi-sysroot
-	cp -al /opt/toolchains/arm-926ejs-linux-gnueabi/arm-926ejs-linux-gnueabi/debug-root/* ${IMAGE_ROOT}/arm-926ejs-linux-gnueabi-sysroot/
+	cp -al ${IMAGE_ROOT}/arm-926ejs-linux-gnueabi/arm-926ejs-linux-gnueabi/arm-926ejs-linux-gnueabi-sysroot ${IMAGE_ROOT}/arm-926ejs-linux-gnueabi-sysroot
+	cp -al ${IMAGE_ROOT}/arm-926ejs-linux-gnueabi/arm-926ejs-linux-gnueabi/debug-root/* ${IMAGE_ROOT}/arm-926ejs-linux-gnueabi-sysroot/
 	rm -rf ${IMAGE_ROOT}/arm-926ejs-linux-gnueabi-sysroot/lib32 ${IMAGE_ROOT}/arm-926ejs-linux-gnueabi-sysroot/lib64 ${IMAGE_ROOT}/arm-926ejs-linux-gnueabi-sysroot/usr/lib32 ${IMAGE_ROOT}/arm-926ejs-linux-gnueabi-sysroot/usr/lib64
 	cd ${IMAGE_ROOT} && tar -C ${IMAGE_ROOT}/arm-926ejs-linux-gnueabi-sysroot -cjf arm-926ejs-linux-gnueabi-sysroot.tar.bz2 .
 	rm -rf ${IMAGE_ROOT}/arm-926ejs-linux-gnueabi-sysroot
-	cd ${IMAGE_ROOT} && tar -C / -cjf arm-926ejs-linux-gnueabi.tar.bz2 opt/toolchains/arm-926ejs-linux-gnueabi
+	cd ${IMAGE_ROOT} && tar -cjf arm-926ejs-linux-gnueabi.tar.bz2 arm-926ejs-linux-gnueabi
 
 clean: ${CONFIGURATION_MARKER}
 	cd ${BUILD_DIR} && ct-ng clean
