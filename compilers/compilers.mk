@@ -19,23 +19,21 @@
 # Author: Stephen Street
 #
 
-DOWNLOAD_DIR=${BUILD_ROOT}/compilers/downloads
+BUILD_PATH = $(subst ${WORKSPACE},${BUILD_ROOT},${CURDIR})
+DOWNLOAD_PATH = ${BUILD_PATH}/downloads
 
-SUBDIRS = arm-926ejs-eabi arm-926ejs-linux-gnueabi arm-cortexa9-eabi arm-cortexa9-linux-gnueabi
+SUBDIRS = clang arm-926ejs-eabi arm-926ejs-linux-gnueabi arm-cortexa9-eabi arm-cortexa9-linux-gnueabi
 
 SUBDIRS-ALL = $(addsuffix -all, ${SUBDIRS})
 SUBDIRS-CLEAN = $(addsuffix -clean, ${SUBDIRS})
-SUBDIRS-INSTALL = $(addsuffix -install, ${SUBDIRS})
 SUBDIRS-DISTCLEAN = $(addsuffix -distclean, ${SUBDIRS})
 
 all: ${DOWNLOAD_DIR} ${SUBDIRS-ALL}
 
-install: ${DOWNLOAD_DIR} ${SUBDIRS-INSTALL}
-
 clean: ${SUBDIRS-CLEAN}
 
 distclean: ${SUBDIRS-DISTCLEAN}
-	rm -rf ${BUILD_ROOT}/compilers
+	rm -rf ${BUILD_DIR}
 
 ${SUBDIRS-ALL}:
 		$(MAKE) -C $(@:-all=) -f $(@:-all=).mk all
@@ -43,14 +41,10 @@ ${SUBDIRS-ALL}:
 ${SUBDIRS-CLEAN}:
 	$(MAKE) -C $(@:-clean=) -f $(@:-clean=).mk clean
 
-${SUBDIRS-INSTALL}:
-	$(MAKE) -C $(@:-install=) -f $(@:-install=).mk install
-
 ${SUBDIRS-DISTCLEAN}:
 	$(MAKE) -C $(@:-distclean=) -f $(@:-distclean=).mk distclean
-	rm -rf ${BUILD_ROOT}/compilers
 
-${DOWNLOAD_DIR}:
-	mkdir -p ${DOWNLOAD_DIR}
+${DOWNLOAD_PATH}:
+	mkdir -p ${DOWNLOAD_PATH}
 
-.PHONY: ${SUBDIRS-ALL} ${SUBDIRS-CLEAN} ${SUBDIRS-INSTALL} ${SUBDIRS_DISTCLEAN}
+.PHONY: ${SUBDIRS-ALL} ${SUBDIRS-CLEAN} ${SUBDIRS_DISTCLEAN}

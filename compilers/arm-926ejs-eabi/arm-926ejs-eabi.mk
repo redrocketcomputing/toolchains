@@ -19,37 +19,42 @@
 # Author: Stephen Street
 #
 
-SOURCE_DIR=${CURDIR}
-BUILD_DIR=${BUILD_ROOT}/compilers/arm-926ejs-eabi
-BUILD_MARKER=${IMAGE_ROOT}/arm-926ejs-eabi/build.log.bz2
-CONFIGURATION_MARKER=${BUILD_DIR}/.config
+SOURCE_PATH = ${CURDIR}
+BUILD_PATH = $(subst ${WORKSPACE},${BUILD_ROOT},${CURDIR})
+IMAGE_PATH = ${IMAGE_ROOT}
 
-all: ${BUILD_MARKER}
+all: ${IMAGE_PATH}/arm-926ejs-eabi.tar.bz2
 
-install: ${BUILD_MARKER}
-	cd ${IMAGE_ROOT} && tar -cjf arm-926ejs-eabi.tar.bz2 arm-926ejs-eabi
-
-clean: ${CONFIGURATION_MARKER}
-	cd ${BUILD_DIR} && ct-ng clean
+clean: ${BUILD_PATH}/.config
+	cd ${BUILD_PATH} && DOWNLOAD_PATH=${DOWNLOAD_PATH} BUILD_PATH=${BUILD_PATH} ct-ng clean
 
 distclean:
-	rm -rf ${BUILD_DIR}
-	rm -rf ${IMAGE_ROOT}/arm-926ejs-eabi*
+	rm -rf ${BUILD_PATH}
+
+realclean: distclean
+	rm -rf ${IMAGE_ROOT}/arm-926ejs-eabi.tar.bz2
+
+menuconfig:
+	cd ${BUILD_PATH} && DOWNLOAD_PATH=${DOWNLOAD_PATH} BUILD_PATH=${BUILD_PATH} ct-ng menuconfig
+	cp ${BUILD_PATH}/.config ${SOURCE_PATH}/arm-926ejs-eabi.config
+	rm -rf ${BUILD_PATH}
 
 debug:
 	@echo "BUILD_ROOT=${BUILD_ROOT}"
 	@echo "TOOLS_ROOT=${TOOLS_ROOT}"
-	@echo "SOURCE_DIR=${SOURCE_DIR}"
-	@echo "BUILD_DIR=${BUILD_DIR}"
-	@echo "BUILD_MARKER=${BUILD_MARKER}"
-	@echo "CONFIGURATION_MARKER=${CONFIGURATION_MARKER}"
+	@echo "SOURCE_PATH=${SOURCE_PATH}"
+	@echo "DOWNLOAD_PATH=${DOWNLOAD_PATH}"
+	@echo "BUILD_PATH=${BUILD_PATH}"
 
-${BUILD_MARKER}: ${CONFIGURATION_MARKER}
-	cd ${BUILD_DIR} && ct-ng build
+${IMAGE_PATH}/arm-926ejs-eabi.tar.bz2: ${BUILD_PATH}/install/build.log.bz2
+	tar -C ${BUILD_PATH}/install -cvjf ${IMAGE_PATH}/arm-926ejs-eabi.tar.bz2 .
 
-${CONFIGURATION_MARKER}:
-	mkdir -p ${BUILD_DIR}
-	cp ${SOURCE_DIR}/arm-926ejs-eabi.config ${BUILD_DIR}/.config
+${BUILD_PATH}/install/build.log.bz2: ${BUILD_PATH}/.config
+	cd ${BUILD_PATH} && DOWNLOAD_PATH=${DOWNLOAD_PATH} BUILD_PATH=${BUILD_PATH} ct-ng build
+
+${BUILD_PATH}/.config: ${SOURCE_PATH}/arm-926ejs-eabi.config
+	mkdir -p ${BUILD_PATH}
+	cp ${SOURCE_PATH}/arm-926ejs-eabi.config ${BUILD_PATH}/.config
 	
-.PHONY: all install clean distclean
+.PHONY: clean distclean
 
