@@ -31,10 +31,7 @@ clean: ${BUILD_PATH}/.config
 distclean:
 	rm -rf ${BUILD_PATH}
 
-realclean: distclean
-	rm -rf ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi.tar.bz2
-
-menuconfig:
+menuconfig: ${BUILD_PATH}/.config
 	cd ${BUILD_PATH} && DOWNLOAD_PATH=${DOWNLOAD_PATH} BUILD_PATH=${BUILD_PATH} ct-ng menuconfig
 	cp ${BUILD_PATH}/.config ${SOURCE_PATH}/arm-cortexa9-linux-gnueabi.config
 	rm -rf ${BUILD_PATH}

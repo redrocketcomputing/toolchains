@@ -33,6 +33,7 @@ distclean: ${SUBDIRS-DISTCLEAN}
 
 realclean: distclean
 	rm -rf local/bin/ct-ng local/lib/ct-ng* local/share/doc local/share/man/man1
+	rm -rf ${IMAGE_ROOT}/*.tar.bz2
 
 ${SUBDIRS-ALL}:
 		$(MAKE) -C $(@:-all=) -f $(@:-all=).mk all

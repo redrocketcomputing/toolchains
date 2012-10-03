@@ -14,40 +14,37 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
-# project.mk
+# crosstools-ng.mk
 # Created on: 18/06/12
 # Author: Stephen Street
 #
 
-SOURCE_DIR=${CURDIR}/src
-BUILD_DIR=${BUILD_ROOT}/tools/crosstools-ng
-CONFIGURATION_MARKER=${BUILD_DIR}/config.log
+SOURCE_PATH = ${CURDIR}/src
+BUILD_PATH = $(subst ${WORKSPACE},${BUILD_ROOT},${CURDIR})
 
-all: ${CONFIGURATION_MARKER}
-	${MAKE} -C ${BUILD_DIR} all
-
-install: ${CONFIGURATION_MARKER}
-	${MAKE} -C ${BUILD_DIR} install
+all: ${TOOLS_ROOT}/bin/ct-ng
 
 clean: ${CONFIGURATION_MARKER}
-	${MAKE} -C ${BUILD_DIR} clean
+	${MAKE} -C ${BUILD_PATH} clean
 
 distclean:
-	rm -rf ${BUILD_DIR}
+	rm -rf ${BUILD_PATH}
 
 debug:
 	@echo "BUILD_ROOT=${BUILD_ROOT}"
 	@echo "TOOLS_ROOT=${TOOLS_ROOT}"
 	@echo "SOURCE_DIR=${SOURCE_DIR}"
-	@echo "BUILD_DIR=${BUILD_DIR}"
+	@echo "BUILD_PATH=${BUILD_PATH}"
 	@echo "CONFIGURATION_MARKER=${CONFIGURATION_MARKER}"
 
-${CONFIGURATION_MARKER}:
-	mkdir -p ${BUILD_DIR}
-	cp -a ${SOURCE_DIR}/* ${BUILD_DIR}
-	cd ${BUILD_DIR} && patch -p1 < ${SOURCE_DIR}/../remove-recursion-check.patch
-	#cd ${BUILD_DIR} && patch -p1 < ${SOURCE_DIR}/../remove-110-aclocal-LIBC_TRY_CC_OPTION.patch
-	cd ${BUILD_DIR} && ./configure --prefix=${TOOLS_ROOT}
+${TOOLS_ROOT}/bin/ct-ng: ${BUILD_PATH}/config.log
+	${MAKE} -C ${BUILD_PATH} install
 	
-.PHONY: all install clean distclean
+${BUILD_PATH}/config.log:
+	mkdir -p ${BUILD_PATH}
+	cp -a ${SOURCE_PATH}/* ${BUILD_PATH}
+	cd ${BUILD_PATH} && patch -p1 < ${SOURCE_PATH}/../remove-recursion-check.patch
+	cd ${BUILD_PATH} && ./configure --prefix=${TOOLS_ROOT}
+	
+.PHONY: clean distclean
 

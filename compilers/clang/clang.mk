@@ -54,7 +54,7 @@ ${IMAGE_PATH}/clang-${VERSION}.tar.bz2: ${FINAL_PATH}/install/bin/clang
 
 ${FINAL_PATH}/install/bin/clang: ${BOOTSTRAP_PATH}/install/bin/clang ${FINAL_PATH}/config.log
 	${MAKE} -j 8 -C ${FINAL_PATH} install
-	mv ${FINAL_PATH}/install/doc ${FINAL_PATH}/install/share/
+	mv ${FINAL_PATH}/install/docs ${FINAL_PATH}/install/share/
 
 ${FINAL_PATH}/config.log:
 	mkdir -p ${FINAL_PATH}

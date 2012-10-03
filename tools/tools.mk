@@ -23,7 +23,6 @@ SUBDIRS = crosstools-ng
 
 SUBDIRS-ALL = $(addsuffix -all, ${SUBDIRS})
 SUBDIRS-CLEAN = $(addsuffix -clean, ${SUBDIRS})
-SUBDIRS-INSTALL = $(addsuffix -install, ${SUBDIRS})
 SUBDIRS-DISTCLEAN = $(addsuffix -distclean, ${SUBDIRS})
 
 all: ${SUBDIRS-ALL}
@@ -40,11 +39,8 @@ ${SUBDIRS-ALL}:
 ${SUBDIRS-CLEAN}:
 	$(MAKE) -C $(@:-clean=) -f $(@:-clean=).mk clean
 
-${SUBDIRS-INSTALL}:
-	$(MAKE) -C $(@:-install=) -f $(@:-install=).mk install
-
 ${SUBDIRS-DISTCLEAN}:
 	$(MAKE) -C $(@:-distclean=) -f $(@:-distclean=).mk distclean
 	rm -rf ${BUILD_ROOT}/tools
 
-.PHONY: ${SUBDIRS-ALL} ${SUBDIRS-CLEAN} ${SUBDIRS-INSTALL} ${SUBDIRS_DISTCLEAN}
+.PHONY: ${SUBDIRS-ALL} ${SUBDIRS-CLEAN} ${SUBDIRS_DISTCLEAN}
