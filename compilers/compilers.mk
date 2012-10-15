@@ -24,7 +24,7 @@ BUILD_PATH = $(subst ${WORKSPACE},${BUILD_ROOT},${CURDIR})
 # Force DOWNLOAD_PATH into the environment
 export DOWNLOAD_PATH = ${BUILD_PATH}/downloads
 
-SUBDIRS = clang arm-926ejs-eabi arm-926ejs-linux-gnueabi arm-cortexa9-eabi arm-cortexa9-linux-gnueabi
+SUBDIRS = clang arm-926ejs-eabi arm-926ejs-linux-gnueabi arm-cortexa9-eabi arm-cortexa9-linux-gnueabi i686-pc-linux-gnu i686-pc-elf
 
 SUBDIRS-ALL = $(addsuffix -all, ${SUBDIRS})
 SUBDIRS-CLEAN = $(addsuffix -clean, ${SUBDIRS})
