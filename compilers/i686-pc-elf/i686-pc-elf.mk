@@ -44,7 +44,7 @@ debug:
 	@echo "BUILD_PATH=${BUILD_PATH}"
 
 ${IMAGE_PATH}/i686-pc-elf.tar.bz2: ${BUILD_PATH}/install/build.log.bz2
-	tar -C ${BUILD_PATH}/install -cvjf ${IMAGE_PATH}/i686-pc-elf.tar.bz2 .
+	tar -C ${BUILD_PATH}/install --exclude="build.log.bz2" -cvjf ${IMAGE_PATH}/i686-pc-elf.tar.bz2 .
 #	rm -rf ${IMAGE_ROOT}/i686-pc-elf-sysroot
 #	cp -al ${IMAGE_ROOT}/i686-pc-elf/i686-pc-elf/i686-pc-elf-sysroot ${IMAGE_ROOT}/i686-pc-elf-sysroot
 #	cp -al ${IMAGE_ROOT}/i686-pc-elf/i686-pc-elf/debug-root/* ${IMAGE_ROOT}/i686-pc-elf-sysroot/

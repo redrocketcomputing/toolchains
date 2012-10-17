@@ -44,7 +44,7 @@ debug:
 	@echo "BUILD_PATH=${BUILD_PATH}"
 
 ${IMAGE_PATH}/arm-cortexa9-linux-gnueabi.tar.bz2: ${BUILD_PATH}/install/build.log.bz2
-	tar -C ${BUILD_PATH}/install -cvjf ${IMAGE_PATH}/arm-cortexa9-linux-gnueabi.tar.bz2 .
+	tar -C ${BUILD_PATH}/install --exclude="build.log.bz2" -cvjf ${IMAGE_PATH}/arm-cortexa9-linux-gnueabi.tar.bz2 .
 #	rm -rf ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi-sysroot
 #	cp -al ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi/arm-cortexa9-linux-gnueabi/arm-cortexa9-linux-gnueabi-sysroot ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi-sysroot
 #	cp -al ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi/arm-cortexa9-linux-gnueabi/debug-root/* ${IMAGE_ROOT}/arm-cortexa9-linux-gnueabi-sysroot/
