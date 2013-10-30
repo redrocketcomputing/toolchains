@@ -15,33 +15,46 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
 # Makefile
-# Created on: 06/07/12
-# Author: Stephen Street
+# Created on: 30/10/12
+# Author: Stephen Street (stephen@redrocketcomputing.com)
 #
 
-SUBDIRS = tools compilers
+EXCLUDEGOALS = distclean realclean update $(wildcard ${REPOSITORY_ROOT}/*.git) tools
 
-SUBDIRS-ALL = $(addsuffix -all, ${SUBDIRS})
-SUBDIRS-CLEAN = $(addsuffix -clean, ${SUBDIRS})
-SUBDIRS-DISTCLEAN = $(addsuffix -distclean, ${SUBDIRS})
+export PROJECT_ROOT ?= ${CURDIR}
+export REPOSITORY_ROOT ?= ${PROJECT_ROOT}/repositories
+export TOOLS_ROOT ?= ${PROJECT_ROOT}/local
+export IMAGE_ROOT ?= ${PROJECT_ROOT}/images
+export BUILD_ROOT ?= ${PROJECT_ROOT}/build
+export CROSS_ROOT ?= ${PROJECT_ROOT}/rootfs
 
-all: ${SUBDIRS-ALL}
+export TARGET_VERSION ?= trunk
 
-clean: ${SUBDIRS-CLEAN}
+export MKSUPPORT_PATH := ${PROJECT_ROOT}/tools/mksupport
+export MKTARGETS := ${MKSUPPORT_PATH}/targets.mk
 
-distclean: ${SUBDIRS-DISTCLEAN}
+include ${MKTARGETS}
 
+.PHONY: update
+update: ${REPOSITORY_ROOT} $(wildcard ${REPOSITORY_ROOT}/*.git)
+
+.PHONY: $(wildcard ${REPOSITORY_ROOT}/*.git)
+$(wildcard ${REPOSITORY_ROOT}/*.git):
+	git --git-dir=$@ fetch -p
+
+.PHONY: distclean
+distclean:
+	rm -rf ${BUILD_ROOT} ${CROSS_ROOT} ${IMAGE_ROOT} ${TOOLS_ROOT}
+
+.PHONY: realclean
 realclean: distclean
-	rm -rf local/bin/ct-ng local/lib/ct-ng* local/share/doc local/share/man/man1
-	rm -rf ${IMAGE_ROOT}/*.tar.bz2
+	rm -rf ${REPOSITORY_ROOT} ${PROJECT_ROOT}/sources
 
-${SUBDIRS-ALL}:
-		$(MAKE) -C $(@:-all=) -f $(@:-all=).mk all
-
-${SUBDIRS-CLEAN}:
-	$(MAKE) -C $(@:-clean=) -f $(@:-clean=).mk clean
-
-${SUBDIRS-DISTCLEAN}:
-	$(MAKE) -C $(@:-distclean=) -f $(@:-distclean=).mk distclean
-
-.PHONY: ${SUBDIRS-ALL} ${SUBDIRS-CLEAN} ${SUBDIRS_DISTCLEAN}
+debug:
+	@echo "REPOSITORY_ROOT=${REPOSITORY_ROOT}"
+	@echo "TOOLS_ROOT=${TOOLS_ROOT}"
+	@echo "IMAGE_ROOT=${IMAGE_ROOT}"
+	@echo "BUILD_ROOT=${BUILD_ROOT}"
+	@echo "CROSS_ROOT=${CROSS_ROOT}"
+	@echo "TARGET_VERSION=${TARGET_VERSION}"
+	@echo "MKSUPPORT_PATH=${MKSUPPORT_PATH}"
