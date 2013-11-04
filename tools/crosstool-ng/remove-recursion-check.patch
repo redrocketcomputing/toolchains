@@ -1,7 +1,8 @@
-diff -ruN repository/Makefile.in repository-new/Makefile.in
---- repository/Makefile.in	2012-07-06 16:44:32.904161730 -0700
-+++ repository-new/Makefile.in	2012-07-06 17:53:33.384161381 -0700
-@@ -103,17 +103,6 @@
+diff --git a/Makefile.in b/Makefile.in
+index 895983b..01759b6 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -110,17 +110,6 @@ endif
  # See top of file for an explanation of why this is needed...
  ifneq ($(strip $(CT_MAKEFLAGS)),)
  

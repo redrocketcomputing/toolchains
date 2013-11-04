@@ -1,0 +1,17 @@
+diff --git a/Makefile.in b/Makefile.in
+index 895983b..59f6d47 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -396,8 +385,10 @@ uninstall-doc:
+ 	@rm -rf "$(DESTDIR)$(docdir)"
+ 
+ uninstall-man:
+-	@echo "  RM      '$(DESTDIR)$(mandir)$(MAN_SUBDIR)/$(PROG_NAME).1.gz'"
+-	@rm -f "$(DESTDIR)$(mandir)$(MAN_SUBDIR)/$(PROG_NAME).1"{,.gz}
++	@echo "  RM      '$(DESTDIR)$(mandir)$(MAN_SUBDIR)/$(PROG_NAME).1*'"
++	@rm -f "$(DESTDIR)$(mandir)$(MAN_SUBDIR)/$(PROG_NAME).1"*
++
++uninstall-lib-kconfig:
+ 
+ endif # Not --local
+ 

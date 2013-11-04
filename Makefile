@@ -19,7 +19,7 @@
 # Author: Stephen Street (stephen@redrocketcomputing.com)
 #
 
-EXCLUDEGOALS = distclean realclean update $(wildcard ${REPOSITORY_ROOT}/*.git) tools
+EXCLUDEGOALS = distclean realclean update $(wildcard ${REPOSITORY_ROOT}/*.git)
 
 export PROJECT_ROOT ?= ${CURDIR}
 export REPOSITORY_ROOT ?= ${PROJECT_ROOT}/repositories
@@ -50,11 +50,3 @@ distclean:
 realclean: distclean
 	rm -rf ${REPOSITORY_ROOT} ${PROJECT_ROOT}/sources
 
-debug:
-	@echo "REPOSITORY_ROOT=${REPOSITORY_ROOT}"
-	@echo "TOOLS_ROOT=${TOOLS_ROOT}"
-	@echo "IMAGE_ROOT=${IMAGE_ROOT}"
-	@echo "BUILD_ROOT=${BUILD_ROOT}"
-	@echo "CROSS_ROOT=${CROSS_ROOT}"
-	@echo "TARGET_VERSION=${TARGET_VERSION}"
-	@echo "MKSUPPORT_PATH=${MKSUPPORT_PATH}"

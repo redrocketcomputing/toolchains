@@ -19,28 +19,6 @@
 # Author: Stephen Street
 #
 
-SUBDIRS = crosstools-ng
+SUBDIRS = crosstool-ng
 
-SUBDIRS-ALL = $(addsuffix -all, ${SUBDIRS})
-SUBDIRS-CLEAN = $(addsuffix -clean, ${SUBDIRS})
-SUBDIRS-DISTCLEAN = $(addsuffix -distclean, ${SUBDIRS})
-
-all: ${SUBDIRS-ALL}
-
-install: ${SUBDIRS-INSTALL}
-
-clean: ${SUBDIRS-CLEAN}
-
-distclean: ${SUBDIRS-DISTCLEAN}
-
-${SUBDIRS-ALL}:
-		$(MAKE) -C $(@:-all=) -f $(@:-all=).mk all
-
-${SUBDIRS-CLEAN}:
-	$(MAKE) -C $(@:-clean=) -f $(@:-clean=).mk clean
-
-${SUBDIRS-DISTCLEAN}:
-	$(MAKE) -C $(@:-distclean=) -f $(@:-distclean=).mk distclean
-	rm -rf ${BUILD_ROOT}/tools
-
-.PHONY: ${SUBDIRS-ALL} ${SUBDIRS-CLEAN} ${SUBDIRS_DISTCLEAN}
+include ${MKTARGETS}

@@ -1,6 +1,6 @@
 targets: compilers
 
-compilers: ${REPOSITORY_ROOT}
+compilers: tools
 
 #targets: ${IMAGE_ROOT}/clang-${TARGET_VERSION}.tar.bz2
 
