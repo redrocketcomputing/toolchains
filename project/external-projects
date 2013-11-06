@@ -1,4 +1,4 @@
 hg::http://crosstool-ng.org/hg/crosstool-ng
-git://github.com/redrocketcomputing/clang-unwind-cxxabi-cxx.git
+git://github.com/redrocketcomputing/clang-unwind-cxxabi-cxx
 bzr::https://code.launchpad.net/~linaro-toolchain-dev/crosstool-ng/linaro
 

@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
-# gcc.mk
+# crosstool-ng.mk
 # Created on: 30/10/13
 # Author: Stephen Street (stephen@redrocketcomputing.com)
 #
