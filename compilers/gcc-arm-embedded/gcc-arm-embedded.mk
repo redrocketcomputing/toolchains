@@ -28,14 +28,42 @@ endif
 
 SOURCE_PATH := ${CURDIR}
 BUILD_PATH := $(subst ${PROJECT_ROOT},${BUILD_ROOT},${SOURCE_PATH})
+IMAGE_PATH := ${IMAGE_ROOT}
+DOWNLOAD_PATH := ${REPOSITORY_ROOT}/sources
 
-all:
+SOURCE_BASE := gcc-arm-none-eabi-4_7
+SOURCE_VERSION := 2013q3
+SOURCE_RELEASE_DATE := 20130916
+SOURCE_PACKAGE := ${SOURCE_BASE}-${SOURCE_VERSION}-${SOURCE_RELEASE_DATE}-src.tar.bz2
+SOURCE_URI := "https://launchpad.net/gcc-arm-embedded/4.7/4.7-2013-q3-update/+download"
 
-clean: 
+all: ${IMAGE_PATH}/${SOURCE_BASE}-linux.tar.bz2
+
+clean:
+	rm -rf ${IMAGE_PATH}/${SOURCE_BASE}-linux.tar.bz2
 
 distclean:
 	rm -rf ${BUILD_PATH}
 
+${IMAGE_PATH}/${SOURCE_BASE}-linux.tar.bz2: ${BUILD_PATH}/pkg/${SOURCE_BASE}-linux.tar.bz2
+	mkdir -p ${IMAGE_PATH}
+	ln -f ${BUILD_PATH}/pkg/${SOURCE_BASE}-linux.tar.bz2 ${IMAGE_PATH}/${SOURCE_BASE}-linux.tar.bz2
 
+${BUILD_PATH}/pkg/${SOURCE_BASE}-linux.tar.bz2: ${BUILD_PATH}/release.txt
+	cd ${BUILD_PATH} && ./build-prerequisites.sh --skip_mingw32
+	cd ${BUILD_PATH} && ./build-toolchain.sh --skip_mingw32
+	
+${BUILD_PATH}/release.txt: ${DOWNLOAD_PATH}/${SOURCE_PACKAGE}
+	mkdir -p ${BUILD_PATH}
+	tar -C ${BUILD_PATH} --strip=1 -mxf ${DOWNLOAD_PATH}/${SOURCE_PACKAGE}
+	cd ${BUILD_PATH}/src && find -name "*.tar.*" | xargs -I% tar -xf %
+	cd ${BUILD_PATH} && patch -p1 < ${SOURCE_PATH}/patches/change-build-host-to-x86-64.patch
+	cd ${BUILD_PATH} && patch -p1 < ${SOURCE_PATH}/patches/remove-release-date-from-package.patch
+	cd ${BUILD_PATH} && patch -p1 < ${SOURCE_PATH}/patches/cloog-ppl-run-autogen.patch
+	cd ${BUILD_PATH}/src/cloog-ppl-0.15.11 && patch -p1 < ${SOURCE_PATH}/patches/add_on_libs_position.patch
+	cd ${BUILD_PATH}/src/zlib-1.2.5 && patch -p1 < ../zlib-1.2.5.patch
 
+${DOWNLOAD_PATH}/${SOURCE_PACKAGE}:
+	mkdir -p ${DOWNLOAD_PATH}
+	wget ${SOURCE_URI}/${SOURCE_PACKAGE} -O ${DOWNLOAD_PATH}/${SOURCE_PACKAGE}
 

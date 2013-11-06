@@ -1,0 +1,12 @@
+--- a/build-prerequisites.sh	2013-09-15 12:19:48.000000000 -0700
++++ b/build-prerequisites.sh	2013-11-05 20:52:37.749010396 -0800
+@@ -154,6 +154,9 @@
+ popd
+ 
+ echo Task [I-5] /$HOST_NATIVE/cloog/
++pushd $SRCDIR/$CLOOG_PPL
++./autogen.sh
++popd
+ rm -rf $BUILDDIR_NATIVE/cloog && mkdir -p $BUILDDIR_NATIVE/cloog
+ pushd $BUILDDIR_NATIVE/cloog
+ 
