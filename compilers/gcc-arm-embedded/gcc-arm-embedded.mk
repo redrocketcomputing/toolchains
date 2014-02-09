@@ -26,16 +26,18 @@ ifeq ($(.DEFAULT_GOAL),)
 	.DEFAULT_GOAL := all
 endif
 
+#https://launchpad.net/gcc-arm-embedded/4.8/4.8-2013-q4-major/+download/gcc-arm-none-eabi-4_8-2013q4-20131204-src.tar.bz2
+
 SOURCE_PATH := ${CURDIR}
 BUILD_PATH := $(subst ${PROJECT_ROOT},${BUILD_ROOT},${SOURCE_PATH})
 IMAGE_PATH := ${IMAGE_ROOT}
 DOWNLOAD_PATH := ${REPOSITORY_ROOT}/sources
 
-SOURCE_BASE := gcc-arm-none-eabi-4_7
-SOURCE_VERSION := 2013q3
-SOURCE_RELEASE_DATE := 20130916
+SOURCE_BASE := gcc-arm-none-eabi-4_8
+SOURCE_VERSION := 2013q4
+SOURCE_RELEASE_DATE := 20131204
 SOURCE_PACKAGE := ${SOURCE_BASE}-${SOURCE_VERSION}-${SOURCE_RELEASE_DATE}-src.tar.bz2
-SOURCE_URI := "https://launchpad.net/gcc-arm-embedded/4.7/4.7-2013-q3-update/+download"
+SOURCE_URI := "https://launchpad.net/gcc-arm-embedded/4.8/4.8-2013-q4-major/+download"
 
 all: ${IMAGE_PATH}/${SOURCE_BASE}-linux.tar.bz2
 
@@ -57,10 +59,10 @@ ${BUILD_PATH}/release.txt: ${DOWNLOAD_PATH}/${SOURCE_PACKAGE}
 	mkdir -p ${BUILD_PATH}
 	tar -C ${BUILD_PATH} --strip=1 -mxf ${DOWNLOAD_PATH}/${SOURCE_PACKAGE}
 	cd ${BUILD_PATH}/src && find -name "*.tar.*" | xargs -I% tar -xf %
-	cd ${BUILD_PATH} && patch -p1 < ${SOURCE_PATH}/patches/change-build-host-to-x86-64.patch
+#	cd ${BUILD_PATH} && patch -p1 < ${SOURCE_PATH}/patches/change-build-host-to-x86-64.patch
 	cd ${BUILD_PATH} && patch -p1 < ${SOURCE_PATH}/patches/remove-release-date-from-package.patch
-	cd ${BUILD_PATH} && patch -p1 < ${SOURCE_PATH}/patches/cloog-ppl-run-autogen.patch
-	cd ${BUILD_PATH}/src/cloog-ppl-0.15.11 && patch -p1 < ${SOURCE_PATH}/patches/add_on_libs_position.patch
+#	cd ${BUILD_PATH} && patch -p1 < ${SOURCE_PATH}/patches/cloog-ppl-run-autogen.patch
+#	cd ${BUILD_PATH}/src/cloog-ppl-0.15.11 && patch -p1 < ${SOURCE_PATH}/patches/add_on_libs_position.patch
 	cd ${BUILD_PATH}/src/zlib-1.2.5 && patch -p1 < ../zlib-1.2.5.patch
 
 ${DOWNLOAD_PATH}/${SOURCE_PACKAGE}:
