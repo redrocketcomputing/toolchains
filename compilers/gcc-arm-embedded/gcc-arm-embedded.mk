@@ -59,10 +59,8 @@ ${BUILD_PATH}/release.txt: ${DOWNLOAD_PATH}/${SOURCE_PACKAGE}
 	mkdir -p ${BUILD_PATH}
 	tar -C ${BUILD_PATH} --strip=1 -mxf ${DOWNLOAD_PATH}/${SOURCE_PACKAGE}
 	cd ${BUILD_PATH}/src && find -name "*.tar.*" | xargs -I% tar -xf %
-#	cd ${BUILD_PATH} && patch -p1 < ${SOURCE_PATH}/patches/change-build-host-to-x86-64.patch
+	cd ${BUILD_PATH} && patch -p1 < ${SOURCE_PATH}/patches/find-gmp-header.patch
 	cd ${BUILD_PATH} && patch -p1 < ${SOURCE_PATH}/patches/remove-release-date-from-package.patch
-#	cd ${BUILD_PATH} && patch -p1 < ${SOURCE_PATH}/patches/cloog-ppl-run-autogen.patch
-#	cd ${BUILD_PATH}/src/cloog-ppl-0.15.11 && patch -p1 < ${SOURCE_PATH}/patches/add_on_libs_position.patch
 	cd ${BUILD_PATH}/src/zlib-1.2.5 && patch -p1 < ../zlib-1.2.5.patch
 
 ${DOWNLOAD_PATH}/${SOURCE_PACKAGE}:
